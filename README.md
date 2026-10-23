@@ -1,54 +1,73 @@
-Software-Defined Networking (SDN) Dynamic Load Balancer
-An OpenFlow-based Layer 2/3 Software-Defined Networking (SDN) Load Balancer implemented using the POX Controller (Control Plane) and Mininet (Data Plane).
-The system abstracts a pool of heterogeneous backend application servers behind a single Virtual IP (VIP). Incoming client flows are intercepted, dynamically translated via bidirectional OpenFlow 1.0 packet rewriting (NAT), and balanced across backend servers.
-The project evaluates and benchmarks two distinct load-balancing paradigms:
- * Deliverable 1 (D1): Static Round-Robin (Baseline)
- * Deliverable 2 (D2): Adaptive Least-Connections (Dynamic Feedback)
-📌 System Architecture
-The topology is deployed on Open vSwitch (s1) operating in secure fail-mode with five connected virtual hosts:
-               +----------------------------------+
-               |       POX Controller (c0)        |
-               | (lb_controller.py / adaptive_lb) |
-               +-----------------+----------------+
-                                 | OpenFlow 1.0 (Port 6633)
-               +-----------------+----------------+
-               |        Open vSwitch (s1)         |
-               +--+--------+--------+--------+----+
-                  | Port 1 | Port 2 | Port 3 | Port 4 | Port 5
-                  |        |        |        |        |
-         +--------+   +----+---+ +--+-----+ +-+------+ +-+------+
-         |   h1   |   |   h2   | |   h3   | |   h4   | |   h5   |
-         +--------+   +--------+ +--------+ +--------+ +--------+
-          Clients (Requesters)     Backend Servers (Workers)
+# Software-Defined Networking (SDN) Dynamic Load Balancer
 
-Network Addressing & Topology Specifications
- * Virtual IP (VIP): 10.0.0.100 | Virtual MAC (VMAC): 00:00:00:00:01:00
- * Clients:
-   * h1: 10.0.0.1 | 00:00:00:00:00:01 (Port 1)
-   * h2: 10.0.0.2 | 00:00:00:00:00:02 (Port 2)
- * Backend Pool (Asymmetric Processing Latencies):
-   * h3 (Server-3): 10.0.0.3 | 00:00:00:00:00:03 (Port 3) — Slow Worker (0.40s synthetic delay)
-   * h4 (Server-4): 10.0.0.4 | 00:00:00:00:00:04 (Port 4) — Medium Worker (0.08s synthetic delay)
-   * h5 (Server-5): 10.0.0.5 | 00:00:00:00:00:05 (Port 5) — Fast Worker (0.01s synthetic delay)
-⚙️ OpenFlow Forwarding & Two-Way NAT
-The POX controller operates as a transparent Layer 2/3 NAT middlebox via OpenFlow ofp_flow_mod instructions:
- * Client Request Interception:
-   * A client transmits a TCP SYN packet to 10.0.0.100:8000.
-   * Switch s1 matches destination IP 10.0.0.100 and generates an ofp_packet_in event to POX.
- * Forward Translation (Client to Backend):
+An OpenFlow-based Layer 2/3 Software-Defined Networking (SDN) Load Balancer implemented using the **POX Controller** (Control Plane) and **Mininet** (Data Plane).
+
+The system abstracts a pool of heterogeneous backend application servers behind a single **Virtual IP (VIP)**. Incoming client flows are intercepted, dynamically translated via bidirectional OpenFlow 1.0 packet rewriting (NAT), and balanced across backend servers. 
+
+The project evaluates and benchmarks two distinct load-balancing paradigms:
+* **Deliverable 1 (D1):** Static Round-Robin (Baseline)
+* **Deliverable 2 (D2):** Adaptive Least-Connections (Dynamic Feedback)
+
+---
+
+## 📌 System Architecture
+
+The topology is deployed on Open vSwitch (`s1`) operating in secure fail-mode with five connected virtual hosts:
+
+
++----------------------------------+
+|       POX Controller (c0)        |
+| (lb_controller.py / adaptive_lb) |
++-----------------+----------------+
+| OpenFlow 1.0 (Port 6633)
++-----------------+----------------+
+|        Open vSwitch (s1)         |
++--+--------+--------+--------+----+
+| Port 1 | Port 2 | Port 3 | Port 4 | Port 5
+|        |        |        |        |
++--------+   +----+---+ +--+-----+ +-+------+ +-+------+
+|   h1   |   |   h2   | |   h3   | |   h4   | |   h5   |
++--------+   +--------+ +--------+ +--------+ +--------+
+Clients (Requesters)     Backend Servers (Workers)
+
+### Network Addressing & Topology Specifications
+* **Virtual IP (VIP):** `10.0.0.100` | **Virtual MAC (VMAC):** `00:00:00:00:01:00`
+* **Clients:**
+  * `h1`: `10.0.0.1` | `00:00:00:00:00:01` (Port 1)
+  * `h2`: `10.0.0.2` | `00:00:00:00:00:02` (Port 2)
+* **Backend Pool (Asymmetric Processing Latencies):**
+  * `h3` (**Server-3**): `10.0.0.3` | `00:00:00:00:00:03` (Port 3) — **Slow Worker** (0.40s synthetic delay)
+  * `h4` (**Server-4**): `10.0.0.4` | `00:00:00:00:00:04` (Port 4) — **Medium Worker** (0.08s synthetic delay)
+  * `h5` (**Server-5**): `10.0.0.5` | `00:00:00:00:00:05` (Port 5) — **Fast Worker** (0.01s synthetic delay)
+
+---
+
+## ⚙️ OpenFlow Forwarding & Two-Way NAT
+
+The POX controller operates as a transparent Layer 2/3 NAT middlebox via OpenFlow `ofp_flow_mod` instructions:
+
+1. **Client Request Interception:**
+   * A client transmits a TCP SYN packet to `10.0.0.100:8000`.
+   * Switch `s1` matches destination IP `10.0.0.100` and generates an `ofp_packet_in` event to POX.
+2. **Forward Translation (Client to Backend):**
    * The controller selects a backend server according to the active policy (Round-Robin modulo index or Least-Connections table).
-   * Installs flow rules on s1:
-     * Rewrite Destination IP: 10.0.0.100 -> Chosen Server IP
-     * Rewrite Destination MAC: 00:00:00:00:01:00 -> Chosen Server MAC
-     * Output: Port assigned to the selected server.
- * Reverse Translation (Backend to Client):
+   * Installs flow rules on `s1`:
+     * **Rewrite Destination IP:** `10.0.0.100` -> `Chosen Server IP`
+     * **Rewrite Destination MAC:** `00:00:00:00:01:00` -> `Chosen Server MAC`
+     * **Output:** Port assigned to the selected server.
+3. **Reverse Translation (Backend to Client):**
    * The backend server responds directly to the client IP.
-   * Switch s1 intercepts the return traffic:
-     * Rewrite Source IP: Server IP -> 10.0.0.100 (VIP)
-     * Rewrite Source MAC: Server MAC -> 00:00:00:00:01:00 (VMAC)
-     * Output: Port connected to the requesting client.
-   * Preserves TCP state across the communication path, preventing client-side RST drops.
-📂 Repository Structure
+   * Switch `s1` intercepts the return traffic:
+     * **Rewrite Source IP:** `Server IP` -> `10.0.0.100` (VIP)
+     * **Rewrite Source MAC:** `Server MAC` -> `00:00:00:00:01:00` (VMAC)
+     * **Output:** Port connected to the requesting client.
+   * Preserves TCP state across the communication path, preventing client-side `RST` drops.
+
+---
+
+## 📂 Repository Structure
+
+
 ├── lb_controller.py      # D1: Static Round-Robin POX OpenFlow controller
 ├── adaptive_lb.py        # D2: Dynamic Least-Connections POX OpenFlow controller
 ├── topo.py               # Mininet custom topology (1 switch, 5 hosts, static ARP)
@@ -58,9 +77,13 @@ The POX controller operates as a transparent Layer 2/3 NAT middlebox via OpenFlo
 ├── .gitignore            # Git exclusion rules
 └── README.md             # Project documentation & run manual
 
-🚀 Setup & Execution Guide
-1. Prerequisites (Ubuntu Linux)
+---
+
+## 🚀 Setup & Execution Guide
+
+### 1. Prerequisites (Ubuntu Linux)
 Install Mininet, Open vSwitch, networking utilities, and Matplotlib:
+```bash
 sudo apt update
 sudo apt install -y mininet openvswitch-switch net-tools ethtool python3-matplotlib git
 sudo systemctl enable --now openvswitch-switch
@@ -68,7 +91,7 @@ sudo systemctl enable --now openvswitch-switch
 2. POX Controller Setup
 Ensure POX is cloned and set to the Python 3 compatible branch:
 cd ~
-git clone https://github.com/noxrepo/pox.git
+git clone [https://github.com/noxrepo/pox.git](https://github.com/noxrepo/pox.git)
 cd ~/pox
 git checkout gar-experimental
 
@@ -126,3 +149,5 @@ xdg-open d2_performance_comparison.png
    * Prevented ARP packet floods and early handshake drops by pre-populating ARP tables on all hosts for peer interfaces and the VIP (10.0.0.100 -> 00:00:00:00:01:00).
  * OpenFlow Buffer Safety:
    * Enforced explicit of.NO_BUFFER checks when handling packet-out events in POX, preventing dropped client connections during high-concurrency bursts.
+
+Click the copy button on the top right of the code box above, paste it directly into your `README.md` file on GitHub, and click the **Preview** tab to see it render automatically into formatted text, tables, and diagrams.
