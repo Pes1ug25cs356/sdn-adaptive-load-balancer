@@ -273,8 +273,3 @@ Comparative benchmarks were executed under identical workloads (60 total request
 
 *Figure 4: Comparative RTT latency distribution showing static round-robin vs. adaptive balancing.*
 
-```
-
-<FollowUp label="Want the exact requirements.txt and .gitignore to commit with this README?" query="Provide the exact contents for requirements.txt and .gitignore for the repository."/>
-
-```
