@@ -245,9 +245,9 @@ Comparative benchmarks were executed under identical workloads (60 total request
 
 | Team Member | USN / Roll No | Primary Responsibilities & Module Ownership |
 | --- | --- | --- |
-| **Member 1** | `[USN / Roll 1]` | **SDN Control Plane & Flow Engineering:** Implemented `adaptive_lb.py` and `lb_controller.py`. Designed OpenFlow 1.0 bidirectional packet rewriting rules, port rate delta polling, and active connection tracking. |
-| **Member 2** | `[USN / Roll 2]` | **Data Plane Infrastructure & Fault Tolerance:** Configured Mininet topology (`topo.py`) with explicit switch port mappings. Developed multithreaded backend socket servers (`server.py`) and automated TCP health monitoring (`health_monitor.py`). |
-| **Member 3** | `[USN / Roll 3]` | **Telemetry Orchestration & Performance Analysis:** Developed Flask telemetry backend (`dashboard.py`), real-time UI dashboard (`index.html`), multithreaded benchmark generator (`benchmark.py`), and metric visualization plotting (`plot_metrics.py`). |
+| **Member 1** | `[USN / Roll 1]` |  |
+| **Member 2** | `[USN / Roll 2]` | |
+| **Member 3** | `[USN / Roll 3]` |  |
 
 ---
 
