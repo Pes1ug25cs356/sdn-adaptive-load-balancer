@@ -1,5 +1,3 @@
-Here is the complete, submission-ready `README.md` formatted with all required project sections, architectural diagrams, execution steps, team breakdowns, and screenshot placeholders:
-
 ```markdown
 # Dynamic SDN Adaptive Load Balancer with Real-Time Telemetry
 
@@ -73,8 +71,8 @@ When a client sends a TCP SYN packet to `10.0.0.100:8000`:
 
 To ensure end-to-end TCP socket transparency without breaking client state:
 
-* **Forward Rule (Client $\to$ Backend):** Rewrites `nw_dst` from `10.0.0.100` to the assigned server IP, rewrites `dl_dst` to the server MAC, and outputs to the respective switch port.
-* **Reverse Rule (Backend $\to$ Client):** Matches return traffic from the backend and rewrites `nw_src` back to `10.0.0.100` and `dl_src` to the Virtual MAC before exiting toward the client switch port.
+* **Forward Rule (Client -> Backend):** Rewrites `nw_dst` from `10.0.0.100` to the assigned server IP, rewrites `dl_dst` to the server MAC, and outputs to the respective switch port.
+* **Reverse Rule (Backend -> Client):** Matches return traffic from the backend and rewrites `nw_src` back to `10.0.0.100` and `dl_src` to the Virtual MAC before exiting toward the client switch port.
 
 ### 3. Active Health Monitoring & Failover
 
@@ -277,23 +275,6 @@ Comparative benchmarks were executed under identical workloads (60 total request
 
 ```
 
----
-
-### How to Save and Commit
-
-1. Create or open `README.md` in the project root:
-   ```bash
-   nano ~/sdn_load_balancer/README.md
-
-```
-
-2. Paste the text above, update the names/USNs in Section 8, and save (`Ctrl+O`, `Enter`, `Ctrl+X`).
-3. Place your screenshots into `~/sdn_load_balancer/screenshots/` matching the referenced filenames (`dashboard_overview.png`, `overload_state.png`, etc.).
-4. Commit and push:
-```bash
-cd ~/sdn_load_balancer
-git add README.md screenshots/
-git commit -m "docs: complete project documentation and evaluation deliverables"
-git push origin main
+<FollowUp label="Want the exact requirements.txt and .gitignore to commit with this README?" query="Provide the exact contents for requirements.txt and .gitignore for the repository."/>
 
 ```
