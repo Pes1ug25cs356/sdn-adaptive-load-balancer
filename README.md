@@ -32,8 +32,8 @@ The control plane is decoupled from the data plane. The POX controller programs 
       |  Client h2 (src) |------2-|  OVS Switch   |-4------| Server h4 (Medium: 0.08s)   |
       +------------------+        |     (s1)      |-5------| Server h5 (Fast: 0.01s)     |
                                   +-------+-------+        +-----------------------------+
-                                          | 6
-                                          +---------------- [Server h6 (Standby Node)]
+                                          | 
+                                          +
                                           |
                                  +--------+--------+
                                  |  Flask Web UI   |
