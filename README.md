@@ -52,7 +52,6 @@ The control plane is decoupled from the data plane. The POX controller programs 
 | **h3** | Backend Server 3 | `10.0.0.3` | `00:00:00:00:00:03` | 3 | High latency (0.40s delay) |
 | **h4** | Backend Server 4 | `10.0.0.4` | `00:00:00:00:00:04` | 4 | Medium latency (0.08s delay) |
 | **h5** | Backend Server 5 | `10.0.0.5` | `00:00:00:00:00:05` | 5 | Low latency (0.01s delay) |
-| **h6** | Standby Server | `10.0.0.6` | `00:00:00:00:00:06` | 6 | Dynamic reserve (0.005s delay) |
 
 ---
 
