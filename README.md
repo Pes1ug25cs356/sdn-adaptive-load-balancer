@@ -245,9 +245,9 @@ Comparative benchmarks were executed under identical workloads (60 total request
 
 | Team Member | USN / Roll No | Primary Responsibilities & Module Ownership |
 | --- | --- | --- |
-| **Member 1** | `[USN / Roll 1]` |  |
-| **Member 2** | `[USN / Roll 2]` | |
-| **Member 3** | `[USN / Roll 3]` |  |
+| **OM SWAROOP REDDY ATLA** | `[PES1UG25CS356 ]` |lb_controller.py,adaptive_lb.py,dashboard.py  |
+| **NEHA MARIA AUGUSTINE ** | `[PES1UG25CS332]` |topo.py,health_monitor.py,index.html |
+| **NISHANT BASU** | `[PES1UG25CS34]` |server.py,benchmark.py,plot_matrix.py  |
 
 ---
 
@@ -256,20 +256,29 @@ Comparative benchmarks were executed under identical workloads (60 total request
 ### Real-Time Telemetry Dashboard
 
 
-*Figure 1: Real-time dashboard showing active connections, bandwidth, and connection stream.*
+<img width="1600" height="942" alt="image" src="https://github.com/user-attachments/assets/e9718885-2eae-46c4-bc55-373660358051" />
+
 
 ### Overload Alert & Dynamic Traffic Rerouting
 
 
-*Figure 2: Server-3 in OVERLOADED state under heavy concurrency, triggering automatic flow diversion.*
-
-### Automated Failover Detection
+<img width="1600" height="942" alt="image" src="https://github.com/user-attachments/assets/3da60a52-0a90-4f3f-b675-ad736aa74a79" />
 
 
-*Figure 3: Server-5 detected as DOWN by the health monitor with 100% successful rerouting.*
+
+
 
 ### Performance Benchmark Comparison
 
 
-*Figure 4: Comparative RTT latency distribution showing static round-robin vs. adaptive balancing.*
+static round-robin:
+<img width="1548" height="808" alt="image" src="https://github.com/user-attachments/assets/05b79cdd-e4c8-4568-95f0-5fffb6ca9526" />
+
+
+vs. adaptive balancing:
+<img width="1548" height="808" alt="image" src="https://github.com/user-attachments/assets/6bad0d2f-2872-4260-8989-dcd924424677" />
+
+PLOT(between static and adaptive):
+<img width="1600" height="756" alt="image" src="https://github.com/user-attachments/assets/30473282-6dcf-4235-a15e-e959fa284d34" />
+
 
